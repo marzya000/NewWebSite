@@ -15,8 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth import views 
+from rest_framework.documentation import include_docs_urls
+from accounts.views import SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/signup/',SignupView.as_view(),name='signup'),
+    path('accounts/login/',views.LoginView.as_view(),name='login'),
+    path('accounts/logout/',views.LogoutView.as_view(),name='logout'),
+    path('blog/', include('blog.urls')),
+    path('comment/', include('comment.urls')),
+    # path('api-docs/',include_docs_urls(title='api sample')),
+    
 ]
+
+# serving static and media for development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

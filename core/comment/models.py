@@ -18,7 +18,7 @@ class Comment(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.created_date
+        return self.subject
     
 
     def get_snippet(self):
@@ -29,8 +29,8 @@ class Comment(models.Model):
 
 
 # class ReplyTo(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="replies")
-#     comment = models.ForeignKey(Comment,on_delete=models.CASCADE, related_name="replies")
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
 #     message = models.TextField(null=False,blank=False)
 #     approved = models.BooleanField(default=False)
 #     created_date = models.DateTimeField(default=timezone.now)

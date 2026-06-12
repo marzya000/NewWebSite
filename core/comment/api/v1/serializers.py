@@ -17,3 +17,16 @@ class CommentSerializer(serializers.ModelSerializer):
         if request:
             return request.build_absolute_uri(obj.pk)
         return None
+    
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        rep = super().to_representation(instance)
+        
+        if request.parser_context.get('kwargs').get('pk'):
+            rep.pop('snippet',None)
+            rep.pop('relative_url',None)
+            rep.pop('absolute_url',None)
+        else:
+            rep.pop('message',None)        
+                
+        return rep

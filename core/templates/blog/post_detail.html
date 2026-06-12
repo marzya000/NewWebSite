@@ -1,38 +1,325 @@
-{% extends "blog/base.html" %}
-    
-    <title>{% block title %}post single{% endblock %}</title>
-    
+{% extends 'blog/base.html' %}
+{% load static %}
+
 {% block content %}
-    <a href="{% url 'blog:post-list' %}">back to posts list</a>
-    <br>
-    <h1>{{object.title}}</h1>
-    <hr>
-    <small>{{object.author}} - {{object.published_date}}</small>
-    <p>{{object.content}}</p>
-    <hr>
-    {% if request.user.is_authenticated %}
-     <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Send comment</button>
-     </form>
-     {% endif %}
-    <hr>
-    {% comment %} {% for comment in object.author.comments.all %}
+<!-- Header End -->
+<!-- Main -->
+<main>
+  <!-- Section -->
+  <div class="py-5 py-lg-7 single-post-type-01">
+    <div class="container">
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-body">
+              <article>
+                <div class="single-post-heading">
+                  <h6 class="text-primary font-w-600"><a href="#">Lifestyle</a></h6>
+                  <h2 class="m-0 h2">{{object.title}}</h2>
+                  <div class="border-top pt-3 mt-3">
+                    <div class="pb-2">
+                      <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                    </div>
+                    <div class="nav small">
+                      <span class="pe-3">{{object.published_date}}</span>
+                      <span class="pe-3">1 Mins Read</span>
+                      <span class="pe-3">5.6k Views</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="single-post-thumb py-5">
+                  {% if post.image %}
+                      <img src="{{post.image.url}}" title="" alt="{{object.title}}" /> <!--{% static 'img/blog-1.jpg' %}-->
+                  {% else %}
+                      <img src="{% static 'img/default-post.jpg' %}" alt="{{ post.title }}">
+                  {% endif %}
+                </div>
+                <div class="single-post-content">
+                  <p>{{object.content}}</p>
+                </div>
+                <div class="nav tag-style pt-3">
+                  <a href="#">Fashion</a>
+                  <a href="#">Travel</a>
+                  <a href="#">Nature</a>
+                  <a href="#">Sport</a>
+                  <a href="#">Weather</a>
+                  <a href="#">Trends</a>
+                  <a href="#">Gear</a>
+                  <a href="#">Lifestyle</a>
+                  <a href="#">Technology</a>
+                </div>
+                <div class="row border-top mt-4 g-0 pt-3">
+                  {% if prev_post %}
+                  <div class="col-6 pe-3">
+                    <div class="d-flex">
+                      <div class="avatar avatar-lg d-none d-lg-inline-flex rounded-circle">
+                        {% if prev_post.image %}
+                          <img src="{{prev_post.image.url}}" title="" alt="" />  <!-- {% static 'img/avatar-1.jpg' %}-->
+                        {% else %}
+                          <img src="{% static 'img/default-post.jpg' %}">
+                        {% endif %}
+                      </div>
+                      <div class="col ps-lg-3">
+                        <label class="w-100 mb-0 small">PREVIOUS POST</label>
+                        <a class="h6" href="{% url 'blog:post-detail' prev_post.pk %}">{{prev_post.title|truncatechars:10}}</a>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if next_post %}
+                  <div class="col-6 text-end ps-3">
+                    <div class="d-flex">
+                      <div class="col pe-lg-3">
+                        <label class="w-100 mb-0 small">NEXT POST</label>
+                        <a class="h6" href="{% url 'blog:post-detail' next_post.pk %}">{{next_post.title|truncatechars:10}}</a>
+                      </div>
+                      <div class="avatar avatar-lg d-none d-lg-inline-flex rounded-circle">
+                      {% if next_post.image %}
+                        <img src="{{next_post.image.url}}" title="" alt="" /><!--{% static 'img/avatar-1.jpg' %}-->
+                      {% else %}
+                        <img src="{% static 'img/default-post.jpg' %}"><!--{% static 'img/blog-1.jpg' %}-->
+                      {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+              </article>
+            </div>
+            <div class="card-footer">
+              <div class="article-share d-flex align-items-center">
+                <h6 class="text-center m-0">215 Shares</h6>
+                <div class="nav justify-content-center ms-auto">
+                  <a class="icon icon-primary rounded-circle me-2" style="background: #455fa1;" href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a class="icon icon-primary rounded-circle me-2" style="background: #58abf5;" href="#"><i class="fab fa-twitter"></i></a>
+                  <a class="icon icon-primary rounded-circle me-2" style="background: #cd1d1f;" href="#"><i class="fab fa-pinterest"></i></a>
+                  <a class="icon icon-primary rounded-circle me-2" style="background: #1980be;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mt-5">
+            <div class="card-header">
+              <h5 class="mb-3">5 Responses</h5>
+            </div>
+          {% for comment in object.comments.all %}
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li class="d-flex">
+                  <!--<div class="avatar rounded-circle">
+                    <img src="{% static 'img/avatar-1.jpg' %}" title="" alt="" />
+                  </div>-->
+                  <div class="col ps-3">
+                    <h6 class="mt-0 mb-1">{{comment.author}}</h6>
+                    <label class="mb-2 small">{{comment.created_date}}</label>
+                    <p>{{comment.message}}</p>
 
-    <p>{{comment.message}}</p>
-    {% endfor %} {% endcomment %}
-    
-    <hr>
-    <br>
-    {% for comment in object.comments.all %}
+                    <!--<div class="nav dark-link small">
+                      <a href="#">
+                        <i class="fas fa-heart text-primary"></i>
+                        Likes
+                      </a>
+                      <a class="ms-3" href="#">
+                        <i class="fas fa-reply"></i>
+                        Replay
+                      </a>
+                    </div>-->
+                  </div>
+                </li>                
+              </ul>
+            </div>
+          {% endfor %}
+          </div>
+          <div class="card mt-5">
+            <div class="card-header">
+              <h5 class="m-0">Leave a Reply</h5>
+            </div>
+            <div class="card-body">
+              <p>Your Email Address Will Not Be Published. Required Fields Are Marked *</p>
+              <div class="row g-3">
+                
+                <form method="post" action="{% url 'blog:post-detail' pk=post.id %}">
+                {% csrf_token %}  
+                <div class="col-md-4">
+                  <input type="text"  class="form-control bg-gray-100" name="subject" placeholder="Subject" />
+                </div></br>
+                <div class="col-12">
+                  <textarea class="form-control bg-gray-100" rows="5" name="message" placeholder="Your Comments *"></textarea>
+                </div>
+                
+                <!--<div class="col-md-4">
+                  <input type="text" name="email" class="form-control bg-gray-100" placeholder="Email *" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="web" class="form-control bg-gray-100" placeholder="Web URL" />
+                </div>-->
+                <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                    <label class="form-check-label" for="flexCheckDefault">Save my name, email, and website in this browser for the next time I comment</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Post Comment</button>
+                </div>
+               </form>
 
-    <h5>Comment Author : {{comment.author}}</h5>
-    <P><span>Comment Subject: </span> {{comment.subject}}</P>
-    <p><span> Comment Content: </span> {{comment.message}}</p>
-      <br>
-      <br>
-
-    {% endfor %}
-
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Sidebar -->
+        <div class="col-lg-4 ps-xxl-8">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">Search</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body text-center">
+              <form>
+                <div class="d-flex flex-row">
+                  <input type="email" class="form-control me-md-2" placeholder="Enter your username" />
+                  <button class="btn btn-primary flex-shrink-0" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">About BlogMe</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body text-center">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+              <div class="nav justify-content-center">
+                <a class="icon icon-sm icon-primary rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                <a class="icon icon-sm icon-primary rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                <a class="icon icon-sm icon-primary rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                <a class="icon icon-sm icon-primary rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">Popular Posts</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body">
+              <div class="d-flex py-3">
+                <div class="avatar avatar-lg rounded-circle">
+                  <img src="{% static 'img/avatar-1.jpg' %}" title="" alt="" />
+                </div>
+                <div class="col ps-3">
+                  <h6 class="font-w-600 mb-1"><a class="text-reset link-effect" href="#">Markdown Language Sample Blog Post Styling</a></h6>
+                  <small>29 March 2021</small>
+                </div>
+              </div>
+              <div class="d-flex py-3">
+                <div class="avatar avatar-lg rounded-circle">
+                  <img src="{% static 'img/avatar-1.jpg' %}" title="" alt="" />
+                </div>
+                <div class="col ps-3">
+                  <h6 class="font-w-600 mb-1"><a class="text-reset link-effect" href="#">Markdown Language Sample Blog Post Styling</a></h6>
+                  <small>29 March 2021</small>
+                </div>
+              </div>
+              <div class="d-flex py-3">
+                <div class="avatar avatar-lg rounded-circle">
+                  <img src="{% static 'img/avatar-1.jpg' %}" title="" alt="" />
+                </div>
+                <div class="col ps-3">
+                  <h6 class="font-w-600 mb-1"><a class="text-reset link-effect" href="#">Markdown Language Sample Blog Post Styling</a></h6>
+                  <small>29 March 2021</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">Top Categories</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled list-type-01 primary-link font-w-500">
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Lifestyle <span class="ms-auto font-w-400 text-body">(19)</span></a>
+                </li>
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Inspiration <span class="ms-auto font-w-400 text-body">(10)</span></a>
+                </li>
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Fashion <span class="ms-auto font-w-400 text-body">(5)</span></a>
+                </li>
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Politic <span class="ms-auto font-w-400 text-body">(25)</span></a>
+                </li>
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Trending <span class="ms-auto font-w-400 text-body">(45)</span></a>
+                </li>
+                <li>
+                  <i class="bi bi-chevron-right text-primary"></i>
+                  <a class="d-flex" href="#">Culture <span class="ms-auto font-w-400 text-body">(12)</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">Newsletter</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body">
+              <h6 class="text-center font-w-500">Join 70,000 subscribers!</h6>
+              <form>
+                <div class="d-flex flex-column mb-2">
+                  <input type="email" class="form-control mb-2" placeholder="Enter your email" />
+                  <button class="btn btn-primary flex-shrink-0" type="submit">Get Started</button>
+                </div>
+                <p class="small m-0 text-center">
+                  By signing up, you agree to our <a href="#">Privacy Policy</a>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="text-center mb-3">Popular Tags</h5>
+              <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
+            </div>
+            <div class="card-body">
+              <div class="nav tag-style">
+                <a href="#">Fashion</a>
+                <a href="#">Travel</a>
+                <a href="#">Nature</a>
+                <a href="#">Sport</a>
+                <a href="#">Weather</a>
+                <a href="#">Trends</a>
+                <a href="#">Gear</a>
+                <a href="#">Lifestyle</a>
+                <a href="#">Technology</a>
+              </div>
+            </div>
+          </div>
+          <div class="card sticky-lg-top sticky-lg-top-50">
+            <div class="card-body">
+              <div class="owl-carousel owl-nav-rounded-sm" data-nav-dots="false" data-nav-arrow="true" data-center="true" data-items="1" data-lg-items="1" data-md-items="1" data-sm-items="1" data-xs-items="1" data-space="10" data-autoplay="true">
+                <a href="#"><img class="rounded-3" src="{% static 'img/blog-10.jpg' %}" title="" alt="" /></a>
+                <a href="#"><img class="rounded-3" src="{% static 'img/blog-10.jpg' %}" title="" alt="" /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Sidebar -->
+      </div>
+    </div>
+  </div>
+  <!-- End Section -->
+</main>
+<!-- End Main -->
+<!-- Footer -->
 {% endblock %}

@@ -3,8 +3,9 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import View, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponse
 from django.views.generic.detail import SingleObjectMixin
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
 from .models import Post
+from accounts.models import Profile
 from blog.forms import PostForm
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -57,13 +58,40 @@ class RedirectToMaktab(RedirectView):
 class PostListView(LoginRequiredMixin, ListView): # PermissionRequiredMixin,
    # permission_required = 'blog.view_post'
     # queryset = Post.objects.all()
-    # model = Post
+
+    model = Post
     context_object_name = "posts"
     paginate_by = 2
 
+    
+
     def get_queryset(self):
-        posts = Post.objects.filter(status=True)
-        return posts
+        queryset = super().get_queryset().filter(status=True)
+
+        category = self.request.GET.get('category')
+        author = self.request.GET.get('author')
+
+        if category:
+            queryset = queryset.filter(category__slug=category)
+
+        if author == 'me':
+            queryset = queryset.filter(author=self.request.user)
+        elif author:
+            queryset = queryset.filter(author__id=author)
+
+        return queryset.distinct()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        querydict = self.request.GET.copy()
+
+        if 'page' in querydict:
+            querydict.pop('page')
+
+        context['query_params'] = querydict.urlencode()
+
+        return context
     
 
 # خودم اینارو اضافه کردم
@@ -74,7 +102,15 @@ class CommentGet(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        post = self.object   # اینو بعدا اضافه کردم
+        posts = Post.objects.filter(status=True) # 
         context['form'] = CommentForm()
+        context['prev_post'] = (
+            posts.filter(id__lt=post.id).order_by('-id').first()
+        )
+        context['next_post'] = (
+            posts.filter(id__gt=post.id).order_by('id').first()
+        )
         return context
     
 class CommentPost(SingleObjectMixin, FormView):
@@ -130,6 +166,8 @@ class PostDetailView(View):
         view = CommentDelete.as_view()
         return view(request, *args, **kwargs)
     
+    
+    
 
 
 '''
@@ -149,8 +187,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     # fields = ['author','title','content','status','category','published_date']
     form_class = PostForm
     success_url = '/blog/post/'
+    template_name = 'blog/post_form.html'
 
-    def form_valid(self, form):
+    def form_valid(self, form):        
         form.instance.author = self.request.user
         return super().form_valid(form)
     
@@ -159,11 +198,19 @@ class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
+    template_name = 'blog/post_form.html'
+    
+    def get_queryset(self):
+        return self.model.objects.filter(author=self.request.user)
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
-    success_url = '/blog/post/'
+    success_url = reverse_lazy('blog:post-list')
+    template_name = "blog/post_confirm_delete.html"
+
+    def get_queryset(self):
+        return self.model.objects.filter(author=self.request.user)
 
 
 @api_view()

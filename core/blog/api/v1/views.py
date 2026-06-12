@@ -251,7 +251,7 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
 
 
-# class CommentModelViewSet(viewsets.ModelViewSet):
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     serializer_class = CommentSerializer
-#     queryset = Comment.objects.all()
+class CommentModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()

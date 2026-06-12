@@ -30,3 +30,7 @@ class CommentSerializer(serializers.ModelSerializer):
             rep.pop('message',None)        
                 
         return rep
+    
+    def create(self,validated_data):        
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)

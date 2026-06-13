@@ -1,8 +1,15 @@
+# general module
 django==4.2.20
 python-decouple==3.8
 Pillow==10.4.0
 djangorestframework==3.15.2
+
+# third party modules
 markdown==3.4.3
 django-filter==23.2
+drf-yasg[validation]==1.21.10
+
 coreapi
 coreschema
+
+# deployment modules

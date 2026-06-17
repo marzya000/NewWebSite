@@ -12,7 +12,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from ...models import Profile
 from django.shortcuts import get_object_or_404
-from mail_templated import send_mail
+from ..utils import EmailThread
+from mail_templated import EmailMessage
 
 
 User = get_user_model()
@@ -88,11 +89,9 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         return obj
     
     
-class TestEmailSend(generics.GenericAPIView):
+class TestEmailSend(generics.GenericAPIView):   
     
-    
-    def get(self, request, *args, **kwargs):
-        from time import sleep
-        send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['razya@razya.com'])
-        sleep(2)
-        return Response('email sent') 
+    def get(self, request, *args, **kwargs):        
+        email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['razya@razya.com'])        
+        EmailThread(email_obj).start()     
+        return Response('email sent')

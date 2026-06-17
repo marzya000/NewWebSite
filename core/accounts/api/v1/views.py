@@ -14,6 +14,10 @@ from ...models import Profile
 from django.shortcuts import get_object_or_404
 from ..utils import EmailThread
 from mail_templated import EmailMessage
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+
 
 
 User = get_user_model()
@@ -91,7 +95,15 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
     
 class TestEmailSend(generics.GenericAPIView):   
     
-    def get(self, request, *args, **kwargs):        
-        email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['razya@razya.com'])        
+    def get(self, request, *args, **kwargs):   
+        self.email = 'razya@razya.com' 
+        user_obj = get_object_or_404(User,email=self.email)
+        token = self.get_tokens_for_user(user_obj)
+        email_obj = EmailMessage('email/hello.tpl', {'token':token}, 'admin@admin.com', to=[self.email])        
         EmailThread(email_obj).start()     
         return Response('email sent')
+    
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+        

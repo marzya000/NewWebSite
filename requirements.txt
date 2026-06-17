@@ -8,10 +8,14 @@ djangorestframework==3.15.2
 markdown==3.4.3
 django-filter==23.2
 drf-yasg[validation]==1.21.10
+djangorestframework-simplejwt==5.3.1
 
 coreapi
 coreschema
 
-djangorestframework-simplejwt==5.3.1
-
 # deployment modules
+
+
+# email third party modules
+django-mail-templated==2.6.5 
+

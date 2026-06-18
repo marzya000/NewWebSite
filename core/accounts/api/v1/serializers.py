@@ -121,3 +121,13 @@ class ActivationResendSerializer(serializers.Serializer):
 
         attrs['user'] = user_obj
         return super().validate(attrs)
+    
+
+#
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(min_length=8,write_only=True)

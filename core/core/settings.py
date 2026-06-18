@@ -29,6 +29,8 @@ DEBUG = config("DEBUG",cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')],default="*")
 
 
+# For redirect /example to /example/
+APPEND_SLASH = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -179,3 +181,15 @@ EMAIL_HOST = 'smtp4dev'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
+
+
+
+# JWT authentication settings
+# Leeway is added to handle possible clock skew between different systems
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "LEEWAY": 30,
+}

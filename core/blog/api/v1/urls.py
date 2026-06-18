@@ -1,15 +1,13 @@
-from django.urls import path, include
 from . import views
-from rest_framework.routers import DefaultRouter,SimpleRouter
+from rest_framework.routers import DefaultRouter
 
-app_name ='api-v1'
+app_name = "api-v1"
 
 router = DefaultRouter()
-router.register('post',views.PostModelViewSet,basename='post')
-router.register('category',views.CategoryModelViewSet,basename='category')
-router.register('comment',views.CommentModelViewSet,basename='comment')
+router.register("post", views.PostModelViewSet, basename="post")
+router.register("category", views.CategoryModelViewSet, basename="category")
+router.register("comment", views.CommentModelViewSet, basename="comment")
 urlpatterns = router.urls
-
 
 
 # urlpatterns = [
@@ -18,5 +16,5 @@ urlpatterns = router.urls
 #     # path('post/', views.PostList.as_view(), name='post-list'),
 #     # path('post/<int:pk>/', views.PostDetail.as_view(), name='post-detail'),
 #     path('post/', views.PostViewSet.as_view({'get':'list','post':'create'}), name='post-list'),
-#     path('post/<int:pk>/', views.PostViewSet.as_view({'get':'retrieve','put':'update','patch':'partial_update','delete':'destroy'}), name='post-detail'),  
+#     path('post/<int:pk>/', views.PostViewSet.as_view({'get':'retrieve','put':'update','patch':'partial_update','delete':'destroy'}), name='post-detail'),
 # ]

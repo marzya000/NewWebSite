@@ -9,11 +9,11 @@ from .paginations import DefaultPagination
 
 
 class CommentModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields = ['author','post']
-    search_fields = ['message']
-    ordering_fields = ['created_date']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ["author", "post"]
+    search_fields = ["message"]
+    ordering_fields = ["created_date"]
     pagination_class = DefaultPagination

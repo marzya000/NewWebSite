@@ -11,6 +11,7 @@ urlpatterns = [
     #  ezafi path('cbv-index', views.IndexView.as_view(), name='cbv-index'),
     #  ezafi path('go-to-maktabkhooneh/<int:pk>', views.RedirectToMaktab.as_view(),name="redirect-to-maktabkhooneh"),
     # ezafi path('home/',views.index, name='home'),
+    path("", views.IndexView.as_view(), name="index"),
     path("post/", views.PostListView.as_view(), name="post-list"),
     path("post/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),
     path("post/create/", views.PostCreateView.as_view(), name="post-create"),

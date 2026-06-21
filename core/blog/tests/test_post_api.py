@@ -19,5 +19,6 @@ class TestPostApi():
             "status": True,            
             "published_date": datetime.now()
         }
+        self.client.force_authenticate(user={})
         response = self.client.post(url,data)
         assert response.status_code == 401

@@ -158,7 +158,7 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
     success_url = "/blog/post/"
 
 
-class PostDetailView(LoginRequiredMixin,View):
+class PostDetailView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         view = CommentGet.as_view()

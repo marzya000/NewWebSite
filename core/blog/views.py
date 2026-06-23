@@ -108,6 +108,7 @@ class PostListView(LoginRequiredMixin, ListView):  # PermissionRequiredMixin,
         return context
 
 
+
 # خودم اینارو اضافه کردم
 
 
@@ -175,6 +176,12 @@ class PostDetailView(LoginRequiredMixin, View):
     def delete(self, request, *args, **kwargs):
         view = CommentDelete.as_view()
         return view(request, *args, **kwargs)
+
+
+
+#
+class PostListApiView(TemplateView):
+    template_name = 'blog/post_list_api.html'
 
 
 """

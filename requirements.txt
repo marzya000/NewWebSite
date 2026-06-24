@@ -26,3 +26,7 @@ flake8==7.3.0
 pytest==9.0.1
 pytest-django==4.11.1
 Faker==35.2.2
+
+# background process and cache
+celery==5.6.0
+redis==7.1.0

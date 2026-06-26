@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import (
@@ -231,3 +232,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 @api_view()
 def api_post_list_view(request):
     return Response({"name": "marzya"})
+
+
+def weather_page(request):
+    return render(request, "blog/weather.html")

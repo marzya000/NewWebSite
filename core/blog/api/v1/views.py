@@ -1,19 +1,6 @@
 # from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import (
-    IsAuthenticatedOrReadOnly,
-    IsAuthenticated,
-)
-
-# from rest_framework.response import Response
-from .serializers import PostSerializer, CategorySerializer
-from ...models import Post, Category
-
-from comment.api.v1.serializers import CommentSerializer
-from comment.models import Comment
-
 # from rest_framework import status
 # from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
 
 # from rest_framework.views import APIView
 # from rest_framework.generics import (
@@ -33,10 +20,26 @@ from rest_framework import viewsets
 
 # from rest_framework import mixins
 # from rest_framework.decorators import action
-from .permissions import IsOwnerOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
+
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import generics
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,
+    IsAuthenticated,
+    AllowAny,
+)
+import requests
+from django_filters.rest_framework import DjangoFilterBackend
+from comment.api.v1.serializers import CommentSerializer
+from comment.models import Comment
+from decouple import config
+from django.core.cache import cache
 from .paginations import DefaultPagination
+from .permissions import IsOwnerOrReadOnly
+from .serializers import PostSerializer, CategorySerializer, WeatherSerializer
+from ...models import Post, Category
 
 """
 @api_view(["GET","POST"])
@@ -282,3 +285,41 @@ class CommentModelViewSet(viewsets.ModelViewSet):
     search_fields = ["message"]
     ordering_fields = ["created_date"]
     pagination_class = DefaultPagination
+
+
+
+API_KEY = config("OPENWEATHER_API_KEY")
+
+
+class WeatherAPIView(generics.GenericAPIView):
+    serializer_class = WeatherSerializer
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        serializer = WeatherSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        city = serializer.validated_data["city"]
+        cache_key = f"weather_{city}"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response({"source": "cache", "data": cached_data})
+
+        url = "https://api.openweathermap.org/data/2.5/weather"
+        params = {"q": city, "appid": API_KEY, "units": "metric", "lang": "fa"}
+        response = requests.get(url, params=params, timeout=5)
+
+        if response.status_code != 200:
+            return Response({"error": "API error"}, status=500)
+
+        data = response.json()
+        weather_data = {
+            "city": city,
+            "temperature": data["main"]["temp"],
+            "description": data["weather"][0]["description"],
+        }
+
+        cache.set(cache_key, weather_data, timeout=1200)  # 20 دقیقه
+
+        return Response({"source": "api", "data": weather_data})
+

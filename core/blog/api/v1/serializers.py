@@ -2,6 +2,31 @@ from rest_framework import serializers
 from ...models import Post, Category
 
 
+SUPPORTED_CITIES = [
+    "Tehran",
+    "London",
+    "Paris",
+    "Berlin",
+    "Madrid",
+    "Rome",
+    "New York",
+    "Los Angeles",
+    "Toronto",
+    "Istanbul",
+    "Dubai",
+    "Tokyo",
+    "Seoul",
+    "Beijing",
+    "Moscow",
+    "Delhi",
+    "Sydney",
+    "Amsterdam",
+    "Stockholm",
+    "Vienna",
+]
+
+
+
 # class PostSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     title = serializers.CharField(max_length=255)
@@ -61,3 +86,10 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["author"] = self.context["request"].user
         return super().create(validated_data)
+
+
+
+class WeatherSerializer(serializers.Serializer):
+    city = serializers.ChoiceField(
+        choices=SUPPORTED_CITIES, default=SUPPORTED_CITIES[0]
+    )

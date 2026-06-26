@@ -16,6 +16,7 @@ coreapi
 coreschema
 
 # deployment modules
+gunicorn==21.2.0
 
 # email third party modules
 django-mail-templated==2.6.5 

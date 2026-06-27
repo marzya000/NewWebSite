@@ -11,7 +11,7 @@ drf-yasg[validation]==1.21.10
 djangorestframework-simplejwt==5.3.1
 djoser==2.2.1
 django-cors-headers==4.9.0
-
+psycopg2-binary
 coreapi
 coreschema
 
@@ -20,6 +20,9 @@ gunicorn==21.2.0
 
 # email third party modules
 django-mail-templated==2.6.5 
+
+#
+requests
 
 # refactoring and tests
 black==25.11.0

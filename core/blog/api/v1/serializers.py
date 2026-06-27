@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from ...models import Post, Category
 
 
@@ -33,6 +34,15 @@ SUPPORTED_CITIES = [
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        validators=[
+            UniqueValidator(
+                queryset=Category.objects.all(),
+                message="category with this name already exists."
+            )
+        ]
+    )
+
     class Meta:
         model = Category
         fields = ["id", "name"]

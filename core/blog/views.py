@@ -29,47 +29,6 @@ from rest_framework.response import Response
 
 # Create your views here.
 
-# def index(request):
-# return render(request,'blog/index.html')
-
-# Function Base View show a template
-'''
-def indexView(request):
-    """
-    a function based view to show index page
-    """
-    return render(request,'index.html', {'name':'ali21'})
-'''
-
-
-class IndexView(TemplateView):
-    """
-    a class based view to show index page
-    """
-
-    template_name = "index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["name"] = "marzya"
-        context["posts"] = Post.objects.all()
-        return context
-
-
-"""  FBV for redirect
-def redirectToMaktab(request):
-    return redirect('https://maktabkhooneh.com')
-"""
-
-
-class RedirectToMaktab(RedirectView):
-
-    url = "https://maktabkhooneh.com"
-
-    def get_redirect_url(self, *args, **kwargs):
-        post = get_object_or_404(Post, pk=kwargs["pk"])
-        print(post)
-        return super().get_redirect_url(*args, **kwargs)
 
 
 class PostListView(LoginRequiredMixin, ListView):  # PermissionRequiredMixin,
@@ -109,10 +68,7 @@ class PostListView(LoginRequiredMixin, ListView):  # PermissionRequiredMixin,
         return context
 
 
-
-# خودم اینارو اضافه کردم
-
-
+# comment 
 class CommentGet(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
@@ -179,23 +135,10 @@ class PostDetailView(LoginRequiredMixin, View):
         return view(request, *args, **kwargs)
 
 
-
 #
 class PostListApiView(TemplateView):
     template_name = 'blog/post_list_api.html'
 
-
-"""
-class PostCreateView(FormView):
-    template_name = 'contact.html'
-    form_class = PostForm
-    success_url = '/blog/post/'
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-"""
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

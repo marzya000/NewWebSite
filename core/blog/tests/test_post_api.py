@@ -83,7 +83,7 @@ class TestPostApi:
         url = reverse("blog:api-v1:post-list")
         data = {
             "title": "test",
-            "content": "description",
+            
         }
         user = common_user
         api_client.force_authenticate(user=user)

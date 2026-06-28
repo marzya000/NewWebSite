@@ -75,7 +75,12 @@ class WeatherAPIView(generics.GenericAPIView):
             return Response({"source": "cache", "data": cached_data})
 
         url = "https://api.openweathermap.org/data/2.5/weather"
-        params = {"q": city, "appid": API_KEY, "units": "metric", "lang": "fa"}
+        params = {
+            "q": city,
+            "appid": API_KEY,
+            "units": "metric",
+            "lang": "fa",
+        }
         response = requests.get(url, params=params, timeout=5)
 
         if response.status_code != 200:

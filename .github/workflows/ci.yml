@@ -13,6 +13,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Show files
+      run: |
+        pwd
+        ls -la
+
     - name: Create .env.stage
       run: cp .env.stage.example .env.stage
     

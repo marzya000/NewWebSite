@@ -1,11 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .serializers import CommentSerializer
-from ...models import Comment
-from .permissions import IsOwnerOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from .serializers import CommentSerializer
+from .permissions import IsOwnerOrReadOnly
 from .paginations import DefaultPagination
+from ...models import Comment
 
 
 class CommentModelViewSet(viewsets.ModelViewSet):

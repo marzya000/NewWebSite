@@ -17,12 +17,12 @@
             <div class="card shadow-hover link-effect-box hover-box-opacity">
               <div class="position-relative">
                 {% if post.image%}
-                    <a href="#"><img src="{{post.image.url}}" title="" alt="" class="card-img-top" /></a><!--{% static 'img/blog-1.jpg' %}-->
+                    <a href="#"><img src="{{post.image.url}}" title="" alt="" class="card-img-top" /></a>
                 {% else %}
                     <a href="#"><img src="{% static 'img/default-post.jpg' %}" alt="{{ post.title }}"></a>
                 {% endif %}
                 <div class="position-absolute bg-primary py-2 px-3 top-0 start-0 mt-3 ms-3 rounded-3 shadow text-white font-w-500 small hover-box-opacity-in">
-                  <i class="bi bi-calendar-date me-2"></i> <!--  Feb 04, 2021 -->{{post.published_date}}
+                  <i class="bi bi-calendar-date me-2"></i>{{post.published_date}}
                 </div>
               </div>
               <div class="card-body">
@@ -35,10 +35,10 @@
                   </div>
                   {% endif %}
                   <div class="nav mb-2">
-                  <a class="text-reset" href="{% url 'blog:post-list' %}?category={{post.category.slug}}">{{post.category.name}}<!--Photography --></a>
+                  <a class="text-reset" href="{% url 'blog:post-list' %}?category={{post.category.slug}}">{{post.category.name}}</a>
                 </div>
-                <h4 class="h5 mb-3"><a class="text-reset link-effect-in" href="{% url 'blog:post-detail' pk=post.id %}">{{post.title}}<!--How to take beautiful photos with phone?--></a></h4>
-                <p class="m-0">{{post.content}}<!--Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.--></p>
+                <h4 class="h5 mb-3"><a class="text-reset link-effect-in" href="{% url 'blog:post-detail' pk=post.id %}">{{post.title|truncatechars:15}}</a></h4>
+                <p class="m-0">{{post.content|truncatechars:15}}</p>
                 
               </div>
               <div class="card-footer border-top">
@@ -48,7 +48,7 @@
                   </div>
                   <div class="col ps-3 font-w-500 dark-link">
                     
-                    <a href="{% url 'blog:post-list' %}?author={{post.author.id}}">{{post.author}}<!--Nancy Pelosi--></a>
+                    <a href="{% url 'blog:post-list' %}?author={{post.author.id}}">{{post.author}}</a>
                   </div>
                   <a class="text-reset" href="#"><i class="bi bi-three-dots"></i></a>
                 </div>
@@ -57,7 +57,6 @@
           </div>
           {% endfor %}
   
-          <!--================================================================================-->
           <!-- pagination -->
           <div class="col-12 pt-3">
             <ul class="pagination justify-content-center">
@@ -178,11 +177,12 @@
             <span class="d-block w-40px h-4px bg-primary mx-auto rounded-3"></span>
           </div>
           <div class="card-body">
-            <ul class="list-unstyled list-type-01 primary-link font-w-500">
+            <ul class="list-unstyled list-type-01 primary-link font-w-500">              
               <li>
                 <i class="bi bi-chevron-right text-primary"></i>
+                <!--<a href="">{{category.name}}</a>-->
                 <a class="d-flex" href="#">Lifestyle <span class="ms-auto font-w-400 text-body">(19)</span></a>
-              </li>
+              </li>               
               <li>
                 <i class="bi bi-chevron-right text-primary"></i>
                 <a class="d-flex" href="#">Inspiration <span class="ms-auto font-w-400 text-body">(10)</span></a>

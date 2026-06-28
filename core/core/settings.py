@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default="test")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool, default=True)
+DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
@@ -55,11 +55,14 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "mail_templated",
     "djoser",
+    "corsheaders",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -91,10 +94,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT", cast=int),
     }
 }
 
@@ -123,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Tehran"
 
 USE_I18N = True
 
@@ -145,6 +153,22 @@ STATICFILES_DIRS = [
 ]
 
 
+# Send Django logs to the console/stdout.
+# Useful for monitoring and debugging in Docker containers.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -162,26 +186,33 @@ AUTH_USER_MODEL = "accounts.User"
 # restframework settings
 
 REST_FRAMEWORK = {
+    # "DEFAULT_RENDERER_CLASSES":( [
+    #     "rest_framework.renderers.JSONRenderer",
+    #     "rest_framework.renderers.BrowsableAPIRenderer",
+    # ]
+    # if DEBUG
+    #     else [
+    #         "rest_framework.renderers.JSONRenderer",
+    #     ]
+    # ),
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ]
-    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    ],
 }
 
 # email configuration
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = False
-EMAIL_HOST = "smtp4dev"
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_PORT = 25
+
+
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER",default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD",default="")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
 
 
 # JWT authentication settings
@@ -193,3 +224,34 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "LEEWAY": 30,
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+]
+
+
+# celery configs
+
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+
+# caching configs
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": config("CACHE_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    cast=lambda v: [s.strip() for s in v.split(",") if s.strip()],
+)
+
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"

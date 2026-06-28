@@ -1,3 +1,4 @@
+from django.urls import path
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -7,8 +8,13 @@ router = DefaultRouter()
 router.register("post", views.PostModelViewSet, basename="post")
 router.register("category", views.CategoryModelViewSet, basename="category")
 router.register("comment", views.CommentModelViewSet, basename="comment")
-urlpatterns = router.urls
 
+
+urlpatterns = [
+    path("weather/", views.WeatherAPIView.as_view(), name="weather-api"),
+]
+
+urlpatterns += router.urls
 
 # urlpatterns = [
 #     # path('post/', views.postList, name='post-list'),

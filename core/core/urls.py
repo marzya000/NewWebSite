@@ -20,6 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views
+from django.http import HttpResponse
 
 # from rest_framework.documentation import include_docs_urls
 from rest_framework import permissions
@@ -37,12 +38,13 @@ schema_view = get_schema_view(
         license=openapi.License(name="MIT License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=(permissions.IsAdminUser,),
 )
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("health/", lambda r: HttpResponse("ok")),
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("accounts.urls")),
     path("accounts/signup/", SignupView.as_view(), name="signup"),
@@ -75,7 +77,7 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
     path(
-        "accounts/reset/done",
+        "accounts/reset/done/",
         views.PasswordResetConfirmView.as_view(),
         name="password_reset_complete",
     ),

@@ -20,6 +20,9 @@ class Post(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField()
 
+    class Meta:
+        ordering = ["-published_date"]
+
     def __str__(self):
         return self.title
 
@@ -31,7 +34,7 @@ class Post(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):

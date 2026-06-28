@@ -6,17 +6,17 @@
 <!-- Main -->
 <main>
   <!-- Page Title -->
-  <section class="parallax effect-section page-heading" style="background-image: url(static/img/home-banner-1.jpg);">
+  <section class="parallax effect-section page-heading" style="background-image: url('{% static 'img/home-banner-1.jpg' %}');">
     <div class="mask bg-black opacity-8"></div>
     <div class="container position-relative">
       <div class="row align-items-center justify-content-center min-vh-40">
         <div class="col-lg-8 text-center">
-          <h1 class="display-6 text-white m-0">About Us</h1>
+          <h1 class="display-6 text-white m-0">New Post</h1>
           <ol class="breadcrumb light mb-0 mt-3 justify-content-center">
             <li class="breadcrumb-item">
-              <a href="#">Home</a>
+              <a href="#">My blog</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">About Us</li>
+            <li class="breadcrumb-item active" aria-current="page">New Post</li>
           </ol>
         </div>
       </div>
@@ -34,7 +34,7 @@
             </div>
             <div class="card-body text-center">
               <div class="avatar avatar-xl rounded-circle">
-                <img src="static/img/avatar-1.jpg" title="" alt="" />
+                <img src="{% static 'img/avatar-1.jpg' %}" title="" alt="" /> <!-- static/img/avatar-1.jpg-->
               </div>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
               <div class="nav justify-content-center">
@@ -51,7 +51,7 @@
             </div>
             <div class="card-body text-center">
               <div class="avatar avatar-xl rounded-circle">
-                <img src="static/img/avatar-6.jpg" title="" alt="" />
+                <img src="{% static 'img/avatar-6.jpg' %}" title="" alt="" /><!--static/img/avatar-6.jpg-->
               </div>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
               <div class="nav justify-content-center">
@@ -102,24 +102,7 @@
                 </div>
             </form>
 
-            <!--<h4>Our History</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <div class="owl-carousel owl-nav-rounded" data-nav-dots="false" data-nav-arrow="true" data-center="true" data-items="2" data-lg-items="2" data-md-items="1" data-sm-items="1" data-xs-items="1" data-space="10" data-autoplay="true">
-              <div class="pt-3">
-                <img src="static/img/blog-1.jpg" title="" alt="" />
-              </div>
-              <div class="pt-3">
-                <img src="static/img/blog-2.jpg" title="" alt="" />
-              </div>
-              <div class="pt-3">
-                <img src="static/img/blog-3.jpg" title="" alt="" />
-              </div>
-            </div>
-            <h4>Objective</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <h4>Values</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          -->
+            
           </article>
         </div>
         <div class="col-lg-6 ps-xl-8"></div>

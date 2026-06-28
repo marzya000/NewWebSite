@@ -30,6 +30,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
 
+
     def perform_create(self, serializer):
         serializer.save(
             author=self.request.user,

@@ -3,7 +3,6 @@ name: Django CI
 on:
   push:
     branches: [ "dev" ]
-  
 
 jobs:
 
@@ -18,8 +17,7 @@ jobs:
       run: cp .env.stage.example .env.stage
     
     - name: Build containers
-      run: docker compose -f docker-compose-stage.yml build      
-    
+      run: docker compose -f docker-compose-stage.yml build          
           
     - name: Lint code with flake8
       run: docker compose -f docker-compose-stage.yml run --rm backend flake8 /app
@@ -36,4 +34,4 @@ jobs:
     
     - name : Cleanup
       if: always()
-      run: docker compose down -v
+      run: docker compose -f docker-compose-stage.yml down -v

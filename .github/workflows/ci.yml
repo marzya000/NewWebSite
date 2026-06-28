@@ -32,6 +32,6 @@ jobs:
     - name: Run tests
       run: docker compose -f docker-compose-stage.yml run --rm backend pytest
     
-    - name : Cleanup
+    - name: Cleanup
       if: always()
       run: docker compose -f docker-compose-stage.yml down -v

@@ -19,7 +19,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "absolute_url",
             "created_date",
         ]
-        read_only_fields = ["author"]
+        read_only_fields = ["author","created_date"]
 
     def get_abs_url(self, obj):
         request = self.context.get("request")

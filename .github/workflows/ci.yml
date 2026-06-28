@@ -16,19 +16,19 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Build containers
-      run: docker compose build      
+      run: docker compose -f docker-compose-stage.yml build      
     
     - name: Check code format with black
-      run: docker compose run --rm backend black --check /app
+      run: docker compose -f docker-compose-stage.yml run --rm backend black --check /app
        
     - name: Lint code with flake8
-      run: docker compose run --rm backend flake8 /app
+      run: docker compose -f docker-compose-stage.yml run --rm backend flake8 /app
 
     - name:  Check migrations
-      run: docker compose run --rm backend python manage.py makemigrations --check --dry-run
+      run: docker compose -f docker-compose-stage.yml run --rm backend python manage.py makemigrations --check --dry-run
 
     - name: Run tests
-      run: docker compose run --rm backend pytest
+      run: docker compose -f docker-compose-stage.yml run --rm backend pytest
     
     - name : Cleanup
       if: always()

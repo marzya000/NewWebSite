@@ -191,15 +191,15 @@ AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
 
-    "DEFAULT_RENDERER_CLASSES":( [
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ]
-    if DEBUG
-        else [
-            "rest_framework.renderers.JSONRenderer",
-        ]
-    ),
+    # "DEFAULT_RENDERER_CLASSES":( [
+    #     "rest_framework.renderers.JSONRenderer",
+    #     "rest_framework.renderers.BrowsableAPIRenderer",
+    # ]
+    # if DEBUG
+    #     else [
+    #         "rest_framework.renderers.JSONRenderer",
+    #     ]
+    # ),
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",

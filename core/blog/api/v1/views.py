@@ -17,7 +17,7 @@ from .paginations import DefaultPagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import PostSerializer, CategorySerializer, WeatherSerializer
 from ...models import Post, Category
-
+from django.utils import timezone
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
@@ -30,11 +30,20 @@ class PostModelViewSet(viewsets.ModelViewSet):
     ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
 
+    def perform_create(self, serializer):
+        serializer.save(
+            author=self.request.user,
+            published_date=timezone.now(),
+        )
+
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ["name","slug"]
+    search_fields = ["name","slug"]
 
 
 class CommentModelViewSet(viewsets.ModelViewSet):

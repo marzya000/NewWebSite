@@ -184,7 +184,6 @@ LOGIN_REDIRECT_URL = "blog:post-list"
 AUTH_USER_MODEL = "accounts.User"
 
 # restframework settings
-
 REST_FRAMEWORK = {
     # "DEFAULT_RENDERER_CLASSES":( [
     #     "rest_framework.renderers.JSONRenderer",

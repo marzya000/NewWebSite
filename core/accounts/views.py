@@ -3,8 +3,8 @@ from django.contrib.auth import login
 from .forms import SignupForm
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
-import time
-from . tasks import sendEmail
+from .tasks import sendEmail
+
 # Create your views here.
 
 

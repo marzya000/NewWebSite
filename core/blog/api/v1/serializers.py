@@ -27,7 +27,6 @@ SUPPORTED_CITIES = [
 ]
 
 
-
 # class PostSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     title = serializers.CharField(max_length=255)
@@ -38,7 +37,7 @@ class CategorySerializer(serializers.ModelSerializer):
         validators=[
             UniqueValidator(
                 queryset=Category.objects.all(),
-                message="category with this name already exists."
+                message="category with this name already exists.",
             )
         ]
     )
@@ -69,7 +68,7 @@ class PostSerializer(serializers.ModelSerializer):
             "created_date",
             "published_date",
         ]
-        read_only_fields = ["author","published_date","created_date"]
+        read_only_fields = ["author", "published_date", "created_date"]
 
     def get_absolute_url(self, obj):
         request = self.context.get("request")
@@ -96,7 +95,6 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["author"] = self.context["request"].user
         return super().create(validated_data)
-
 
 
 class WeatherSerializer(serializers.Serializer):

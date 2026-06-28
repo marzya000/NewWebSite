@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 from .views import weather_page
+
 # from django.views.generic import TemplateView
 # from django.views.generic.base import RedirectView
 
@@ -21,5 +22,4 @@ urlpatterns = [
     ),
     path("weather-page/", weather_page, name="weather-page"),
     path("api/v1/", include("blog.api.v1.urls")),
-    
 ]

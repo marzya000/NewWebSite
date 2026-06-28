@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import TemplateView
 from django.views.generic import (
     View,
     ListView,
@@ -28,7 +27,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Create your views here.
-
 
 
 class PostListView(LoginRequiredMixin, ListView):  # PermissionRequiredMixin,
@@ -68,7 +66,7 @@ class PostListView(LoginRequiredMixin, ListView):  # PermissionRequiredMixin,
         return context
 
 
-# comment 
+# comment
 class CommentGet(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
@@ -137,8 +135,7 @@ class PostDetailView(LoginRequiredMixin, View):
 
 #
 class PostListApiView(TemplateView):
-    template_name = 'blog/post_list_api.html'
-
+    template_name = "blog/post_list_api.html"
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

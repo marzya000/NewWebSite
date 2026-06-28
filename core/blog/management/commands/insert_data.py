@@ -2,24 +2,21 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 import random
 from datetime import datetime
-from accounts.models import User,Profile
-from blog.models import Post,Category
+from accounts.models import User, Profile
+from blog.models import Post, Category
 
-category_list = [
-    "IT",
-    "Design",
-    "Fun"
-]
+category_list = ["IT", "Design", "Fun"]
 
 
 class Command(BaseCommand):
     help = "inserting dummy data"
+
     def __init__(self, *args, **kwargs):
-        super(Command,self).__init__(*args, **kwargs)
+        super(Command, self).__init__(*args, **kwargs)
         self.fake = Faker()
 
     def handle(self, *args, **options):
-        user = User.objects.create_user(email=self.fake.email(),password="test@123456")
+        user = User.objects.create_user(email=self.fake.email(), password="test@123456")
         profile = Profile.objects.get(user=user)
         profile.first_name = self.fake.first_name()
         profile.last_name = self.fake.last_name()
@@ -30,10 +27,10 @@ class Command(BaseCommand):
             Category.objects.get_or_create(name=name)
         for _ in range(10):
             Post.objects.create(
-                author = user,
-                title = self.fake.paragraph(nb_sentences=1),
-                content = self.fake.paragraph(nb_sentences=10),
-                status = random.choice([True,False]),
-                category = Category.objects.get(name=random.choice(category_list)),
-                published_date = datetime.now()
+                author=user,
+                title=self.fake.paragraph(nb_sentences=1),
+                content=self.fake.paragraph(nb_sentences=10),
+                status=random.choice([True, False]),
+                category=Category.objects.get(name=random.choice(category_list)),
+                published_date=datetime.now(),
             )

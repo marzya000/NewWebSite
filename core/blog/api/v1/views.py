@@ -21,7 +21,7 @@ from django.utils import timezone
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly, IsAuthenticated]# 
+    permission_classes = [IsOwnerOrReadOnly, IsAuthenticated]  #
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -42,8 +42,8 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ["name","slug"]
-    search_fields = ["name","slug"]
+    filterset_fields = ["name", "slug"]
+    search_fields = ["name", "slug"]
 
 
 class CommentModelViewSet(viewsets.ModelViewSet):
@@ -57,8 +57,8 @@ class CommentModelViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
 
 
-
 API_KEY = config("OPENWEATHER_API_KEY")
+
 
 class WeatherAPIView(generics.GenericAPIView):
     serializer_class = WeatherSerializer
@@ -91,4 +91,3 @@ class WeatherAPIView(generics.GenericAPIView):
         cache.set(cache_key, weather_data, timeout=1200)  # 20 دقیقه
 
         return Response({"source": "api", "data": weather_data})
-

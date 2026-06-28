@@ -95,7 +95,6 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -106,9 +105,6 @@ DATABASES = {
         "PORT": config("POSTGRES_PORT", cast=int),
     }
 }
-
-
-
 
 
 # Password validation
@@ -190,7 +186,6 @@ AUTH_USER_MODEL = "accounts.User"
 # restframework settings
 
 REST_FRAMEWORK = {
-
     # "DEFAULT_RENDERER_CLASSES":( [
     #     "rest_framework.renderers.JSONRenderer",
     #     "rest_framework.renderers.BrowsableAPIRenderer",
@@ -206,19 +201,18 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ]
+    ],
 }
 
 # email configuration
 
 
-EMAIL_BACKEND= config("EMAIL_BACKEND")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS",cast=bool)
-EMAIL_HOST= config("EMAIL_HOST")
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = config("EMAIL_PORT",cast=int)
-
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
 
 
 # JWT authentication settings

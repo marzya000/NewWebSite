@@ -181,6 +181,6 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-
+!.env.stage.example
 #
 .vscode/

@@ -184,7 +184,6 @@ LOGIN_REDIRECT_URL = "blog:post-list"
 AUTH_USER_MODEL = "accounts.User"
 
 # restframework settings
-
 REST_FRAMEWORK = {
     # "DEFAULT_RENDERER_CLASSES":( [
     #     "rest_framework.renderers.JSONRenderer",
@@ -210,8 +209,8 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = config("EMAIL_BACKEND")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_HOST_USER = config("EMAIL_HOST_USER",default="")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD",default="")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 
 

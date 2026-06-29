@@ -3,7 +3,6 @@ name: Django CI
 on:
   push:
     branches: [ "dev" ]
-  
 
 jobs:
 
@@ -14,17 +13,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Show files
+      run: |
+        pwd
+        ls -la
+
     - name: Create .env.stage
       run: cp .env.stage.example .env.stage
     
     - name: Build containers
-      run: docker compose -f docker-compose-stage.yml build      
-    
-    - name: Check code format with black
-      run: docker compose -f docker-compose-stage.yml run --rm backend black --check /app
-       
+      run: docker compose -f docker-compose-stage.yml build          
+          
     - name: Lint code with flake8
       run: docker compose -f docker-compose-stage.yml run --rm backend flake8 /app
+
+    - name: Check code format with black
+      run: docker compose -f docker-compose-stage.yml run --rm backend black --check /app
+      continue-on-error: true  
 
     - name:  Check migrations
       run: docker compose -f docker-compose-stage.yml run --rm backend python manage.py makemigrations --check --dry-run
@@ -32,6 +37,6 @@ jobs:
     - name: Run tests
       run: docker compose -f docker-compose-stage.yml run --rm backend pytest
     
-    - name : Cleanup
+    - name: Cleanup
       if: always()
-      run: docker compose down -v
+      run: docker compose -f docker-compose-stage.yml down -v

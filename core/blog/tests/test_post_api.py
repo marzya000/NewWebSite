@@ -40,13 +40,11 @@ def post(db, common_user):
 
 @pytest.mark.django_db
 class TestPostApi:
-    #
     def test_get_post_response_401_status(self, api_client):
         url = reverse("blog:api-v1:post-list")
         response = api_client.get(url)
         assert response.status_code == 401
 
-    #
     def test_get_post_response_200_status(self, api_client, common_user):
         url = reverse("blog:api-v1:post-list")
         user = common_user
@@ -54,7 +52,6 @@ class TestPostApi:
         response = api_client.get(url)
         assert response.status_code == 200
 
-    #
     def test_create_post_response_401_status(self, api_client):
         url = reverse("blog:api-v1:post-list")
         data = {
@@ -66,7 +63,6 @@ class TestPostApi:
         response = api_client.post(url, data)
         assert response.status_code == 401
 
-    #
     def test_create_post_response_201_status(self, api_client, common_user):
         url = reverse("blog:api-v1:post-list")
         data = {
@@ -87,14 +83,12 @@ class TestPostApi:
         url = reverse("blog:api-v1:post-list")
         data = {
             "title": "test",
-            "content": "description",
         }
         user = common_user
         api_client.force_authenticate(user=user)
         response = api_client.post(url, data)
         assert response.status_code == 400
 
-    #######################################################
     def test_update_post_response_401_status(self, api_client, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
         data = {
@@ -105,8 +99,6 @@ class TestPostApi:
         }
         response = api_client.put(url, data, format="json")
         assert response.status_code == 401
-
-    ################################################
 
     def test_update_post_response_200_status(self, api_client, common_user, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
@@ -124,7 +116,6 @@ class TestPostApi:
         assert post.title == "update-post"
         assert post.status is True
 
-    #########################################3
     def test_partial_update_post_response_401_status(self, api_client, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
         data = {
@@ -133,7 +124,6 @@ class TestPostApi:
         response = api_client.patch(url, data, format="json")
         assert response.status_code == 401
 
-    ################################################
     def test_partial_update_post_response_200_status(
         self, api_client, common_user, post
     ):
@@ -148,13 +138,11 @@ class TestPostApi:
         assert post.title == "partial-update-post"
         assert post.status == post.status
 
-    ###################################################
     def test_delete_post_response_401_status(self, api_client, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
         response = api_client.delete(url)
         assert response.status_code == 401
 
-    ##########################################################
     def test_delete_post_response_404_status(self, api_client, other_user, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
         api_client.force_authenticate(user=other_user)
@@ -162,7 +150,6 @@ class TestPostApi:
         assert response.status_code in [403, 404]
         assert Post.objects.filter(id=post.id).exists() is True
 
-    ########################################################
     def test_delete_post_response_204_status(self, api_client, common_user, post):
         url = reverse("blog:api-v1:post-detail", kwargs={"pk": post.id})
         api_client.force_authenticate(user=common_user)
